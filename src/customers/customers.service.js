@@ -6,8 +6,8 @@ class CustomerService {
         return createCustomer
     }
 
-    async get() {
-        const getCustomers = await repository.get()
+    async get(skip, limit) {
+        const getCustomers = await repository.get(skip, limit)
         return getCustomers
     }
 }
