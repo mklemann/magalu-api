@@ -20,6 +20,11 @@ class CustomerService {
         const updateCustomer = await repository.update(id, body)
         return updateCustomer
     }
+
+    async delete(id) {
+        const deleteCustomer = await repository.delete(id)
+        return deleteCustomer
+    }
 }
 
 module.exports = new CustomerService()

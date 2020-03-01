@@ -10,6 +10,6 @@ router.get('/customer/:id', verifyJwt, controller.getById)
 router.post('/customer', verifyJwt, controller.post)
 
 router.put('/customer/:id', verifyJwt, controller.update)
-// router.delete('/customer/:id', controller.get)
+router.delete('/customer/:id', verifyJwt, controller.delete)
 
 module.exports = router

@@ -3,25 +3,6 @@ const jwt = require('jsonwebtoken')
 const env = require('../environment')
 
 class CustomerConstroller {
-    // async login(req, res) {
-    //     try {
-    //         const { body } = req
-    //         if (!body.user || !body.password) {
-    //             throw new Error('User and password must be send!')
-    //         }
-
-            
-
-    //         const id = 1
-    //         const token = jwt.sign({ id }, env.SECRET, {
-    //             expiresIn: 3600
-    //         })
-    //         res.json({ auth: true, token, expiresIn: 3600 })
-    //     } catch (e) {
-    //         res.json(e.message || e)
-    //     }
-    // }
-
     async post(req, res) {
         try {
             const { body } = req
@@ -30,7 +11,6 @@ class CustomerConstroller {
             }
 
             res.status(201).json(await service.post(body))
-            return
         } catch (e) {
             // return sendJSONResponse(e, 500, { success: false, message: 'Registro duplicado. Cadastre com outro email!' })
             if (e.code === 11000) res.status(500).json({ success: false, message: 'Registro duplicado. Cadastre com outro email!' })
@@ -54,7 +34,6 @@ class CustomerConstroller {
             }
 
             res.json(result)
-            return
         } catch (e) {
             res.status(400).json({ succes: false, message: e.message || e })
         }
@@ -70,7 +49,6 @@ class CustomerConstroller {
             const customers = await service.getById(id)
 
             res.json(customers)
-            return
         } catch (e) {
             res.status(400).json({ succes: false, message: e.message || e })
         }
@@ -90,10 +68,25 @@ class CustomerConstroller {
 
             const customers = await service.update(id, body)
 
-            res.json(customers)
-            return
+            res.json("Customer updated!")
         } catch (e) {
             if (e.code === 11000) res.status(500).json({ success: false, message: 'Registro duplicado. Cadastre com outro email!' })
+            res.status(400).json({ succes: false, message: e.message || e })
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            const { id } = req.params
+
+            if (!id) {
+                throw new Error(`Param id must be send!`)
+            }
+
+            const customers = await service.delete(id)
+
+            res.json("Customer deleted!")
+        } catch (e) {
             res.status(400).json({ succes: false, message: e.message || e })
         }
     }

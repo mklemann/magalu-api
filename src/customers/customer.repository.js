@@ -43,7 +43,7 @@ class ReposityCustomers {
                     if (err) return reject(err)
                     return resolve(docs)
 
-                    
+
                     client.close()
                 })
             })
@@ -89,6 +89,24 @@ class ReposityCustomers {
         })
     }
 
+    async delete(id) {
+        return new Promise((resolve, reject) => {
+            MongoClient.connect(env.uri, (err, client) => {
+                if (err) return reject(err)
+                assert.equal(null, err)
+                console.log('Connected to insert document on mongodb')
+
+                const db = client.db(env.databaseName)
+                const collection = db.collection('customers-test')
+
+                collection.deleteOne({ _id: ObjectId(id) }, (err, r) => {
+                    if (err) return reject(err)
+                    return resolve(r)
+                })
+                client.close()
+            })
+        })
+    }
 }
 
 module.exports = new ReposityCustomers()
