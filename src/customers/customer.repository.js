@@ -9,7 +9,6 @@ class ReposityCustomers {
             MongoClient.connect(env.uri, (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
-                console.log('Connected to insert document on mongodb')
 
                 const db = client.db(env.databaseName)
 
@@ -19,9 +18,9 @@ class ReposityCustomers {
                 collection.insertOne(body, {
                     wtimeout: 10000,
                     j: true
-                }, (err, r) => {
+                }, (err, result) => {
                     if (err) return reject(err)
-                    return resolve('Criado')
+                    return resolve(result.ops[0] || result)
                 })
 
                 client.close()
@@ -34,16 +33,13 @@ class ReposityCustomers {
             MongoClient.connect(env.uri, { useUnifiedTopology: true }, async (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
-                console.log('Connected to insert document on mongodb')
 
                 const db = client.db(env.databaseName)
                 const collection = db.collection('customers-test')
 
-                await collection.find({}).skip(skip).limit(limit).toArray((err, docs) => {
+                await collection.find({}).skip(skip).limit(limit).toArray((err, result) => {
                     if (err) return reject(err)
-                    return resolve(docs)
-
-
+                    return resolve(result)
                     client.close()
                 })
             })
@@ -60,11 +56,11 @@ class ReposityCustomers {
                 const db = client.db(env.databaseName)
                 const collection = db.collection('customers-test')
 
-                collection.findOne({ _id: ObjectId(id) }, (err, doc) => {
+                collection.findOne({ _id: ObjectId(id) }, (err, result) => {
                     if (err) return reject(err)
-                    return resolve(doc)
+                    return resolve(result)
+                    client.close()
                 })
-                client.close()
             })
         })
     }
@@ -80,9 +76,9 @@ class ReposityCustomers {
                 const collection = db.collection('customers-test')
 
                 collection.updateOne({ _id: ObjectId(id) },
-                    { $set: { name: body.name, email: body.email } }, (err, doc) => {
+                    { $set: { name: body.name, email: body.email } }, (err, result) => {
                         if (err) return reject(err)
-                        return resolve(doc)
+                        return resolve(result)
                     })
                 client.close()
             })
@@ -99,9 +95,9 @@ class ReposityCustomers {
                 const db = client.db(env.databaseName)
                 const collection = db.collection('customers-test')
 
-                collection.deleteOne({ _id: ObjectId(id) }, (err, r) => {
+                collection.deleteOne({ _id: ObjectId(id) }, (err, result) => {
                     if (err) return reject(err)
-                    return resolve(r)
+                    return resolve(result)
                 })
                 client.close()
             })

@@ -36,7 +36,6 @@ class LoginController {
 
     async verifyJwt(req, res, next) {
         const { authorization } = req.headers
-        console.log(req.headers)
 
         const token = authorization.split(' ')[1]
 

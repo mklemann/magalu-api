@@ -1,20 +1,18 @@
 const service = require('./customers.service')
-const jwt = require('jsonwebtoken')
-const env = require('../environment')
 
 class CustomerConstroller {
     async post(req, res) {
         try {
             const { body } = req
+
             if (!body.name || !body.email) {
                 throw new Error('Fields name and email must be send!')
             }
 
             res.status(201).json(await service.post(body))
         } catch (e) {
-            // return sendJSONResponse(e, 500, { success: false, message: 'Registro duplicado. Cadastre com outro email!' })
             if (e.code === 11000) res.status(500).json({ success: false, message: 'Registro duplicado. Cadastre com outro email!' })
-            return res.status(500).send(e)
+            return res.status(500).send(e.message || e)
         }
     }
 
@@ -27,9 +25,11 @@ class CustomerConstroller {
 
             const customers = await service.get(Number(skip), Number(limit))
             const result = {
-                total: customers.length,
-                skip,
-                limit,
+                meta: {
+                    total: customers.length,
+                    skip,
+                    limit,
+                },
                 data: customers
             }
 
@@ -66,8 +66,7 @@ class CustomerConstroller {
                 throw new Error(`Body must be send to update a register!`)
             }
 
-            const customers = await service.update(id, body)
-
+            await service.update(id, body)
             res.json("Customer updated!")
         } catch (e) {
             if (e.code === 11000) res.status(500).json({ success: false, message: 'Registro duplicado. Cadastre com outro email!' })
@@ -83,8 +82,7 @@ class CustomerConstroller {
                 throw new Error(`Param id must be send!`)
             }
 
-            const customers = await service.delete(id)
-
+            await service.delete(id)
             res.json("Customer deleted!")
         } catch (e) {
             res.status(400).json({ succes: false, message: e.message || e })
