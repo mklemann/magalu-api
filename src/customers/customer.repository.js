@@ -39,7 +39,7 @@ class ReposityCustomers {
                 const db = client.db(env.databaseName)
                 const collection = db.collection('customers-test')
 
-                collection.find({}).toArray((err, docs) => {
+                collection.find({  }).skip(1).li.toArray((err, docs) => {
                     if (err) return reject(err)
                     return resolve(docs)
                 })
