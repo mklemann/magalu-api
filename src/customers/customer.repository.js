@@ -1,6 +1,6 @@
 const { MongoClient, ObjectId } = require('mongodb')
 const assert = require('assert')
-
+const _ = require('lodash')
 const env = require('../environment')
 
 class ReposityCustomers {
@@ -14,7 +14,7 @@ class ReposityCustomers {
 
                 const collection = db.collection('customers-test')
                 collection.createIndex({ email: 1 }, { unique: true })
-                collection.createIndex({ "favorites.id": 1 }, { unique: true })
+                // collection.createIndex({ "favorites.id": 1 }, { unique: true })
 
                 collection.insertOne(body, {
                     wtimeout: 10000,
@@ -23,8 +23,8 @@ class ReposityCustomers {
                     if (err) return reject(err)
                     return resolve(result.ops[0] || result)
                 })
-
                 client.close()
+
             })
         })
     }
@@ -115,16 +115,33 @@ class ReposityCustomers {
                 const db = client.db(env.databaseName)
                 const collection = db.collection('customers-test')
 
-                // collection.aggregate({ _id: ObjectId(customerId) }, { $in: { favorites: { id: "1bcd1b21-7205-4f02-227f-4c8c9e845ade" } } }, (err, result) => {
-                //     if (err) return reject(err)
-                //     return resolve(result)
-                // })
-
-                collection.update({ _id: ObjectId(customerId) }, { $push: { favorites: { $each: products } } }, (err, result) => {
+                collection.findOne({ _id: ObjectId(customerId) }, (err, res) => {
                     if (err) return reject(err)
-                    return resolve(result)
+
+                    let { favorites = [] } = res
+                    let allFavorites = []
+
+                    // products - novos
+                    // existentes
+
+
+                    if (favorites.length === 0) {
+                        allFavorites = products
+                    } else {
+                        for (const product of products) {
+                            const favoritesString = JSON.stringify(favorites)
+                            if(!favoritesString.includes(product.id)) allFavorites.push(product)
+                        }
+                    }
+
+                    collection.updateOne({ _id: ObjectId(customerId) }, { $push: { favorites: { $each: allFavorites } } }, (err, result) => {
+                        if (err) return reject(err)
+                        return resolve(result)
+                    })
+
+                    client.close()
                 })
-                client.close()
+
             })
         })
     }

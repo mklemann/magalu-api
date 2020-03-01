@@ -93,7 +93,6 @@ class CustomerConstroller {
         try {
             const { products } = req.body
             const { customerId } = req.params
-            console.log({ products, customerId })
             if (!products || products.length === 0 || !customerId) {
                 throw new Error(`products and customerId must be send!`)
             }
