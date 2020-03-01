@@ -1,4 +1,5 @@
 const repository = require('./customer.repository')
+const checkProduct = require('../_shared/utils/checkProduct')
 
 class CustomerService {
     async post(body) {
@@ -24,6 +25,21 @@ class CustomerService {
     async delete(id) {
         const deleteCustomer = await repository.delete(id)
         return deleteCustomer
+    }
+
+    async favoriteProduct(customerId, products) {
+        products = [...new Set(products)]
+        const favoriteProducts = []
+
+        for (const p of products) {
+            const check = await checkProduct(p)
+            if (check.statusCode == 200) {
+                favoriteProducts.push(check.body)
+            }
+        }
+
+        return await repository.favoriteProduct(customerId, favoriteProducts)
+        return favoriteProducts
     }
 }
 

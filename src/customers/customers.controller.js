@@ -88,6 +88,21 @@ class CustomerConstroller {
             res.status(400).json({ succes: false, message: e.message || e })
         }
     }
+
+    async favoriteProduct(req, res) {
+        try {
+            const { products } = req.body
+            const { customerId } = req.params
+            console.log({ products, customerId })
+            if (!products || products.length === 0 || !customerId) {
+                throw new Error(`products and customerId must be send!`)
+            }
+
+            res.json(await service.favoriteProduct(customerId, products))
+        } catch (e) {
+            res.status(400).json({ succes: false, message: e.message || e })
+        }
+    }
 }
 
 module.exports = new CustomerConstroller()
