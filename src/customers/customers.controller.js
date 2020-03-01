@@ -1,6 +1,27 @@
 const service = require('./customers.service')
+const jwt = require('jsonwebtoken')
+const env = require('../environment')
 
 class CustomerConstroller {
+    // async login(req, res) {
+    //     try {
+    //         const { body } = req
+    //         if (!body.user || !body.password) {
+    //             throw new Error('User and password must be send!')
+    //         }
+
+            
+
+    //         const id = 1
+    //         const token = jwt.sign({ id }, env.SECRET, {
+    //             expiresIn: 3600
+    //         })
+    //         res.json({ auth: true, token, expiresIn: 3600 })
+    //     } catch (e) {
+    //         res.json(e.message || e)
+    //     }
+    // }
+
     async post(req, res) {
         try {
             const { body } = req
