@@ -1,7 +1,7 @@
 const service = require('./customers.service')
 
 class CustomerConstroller {
-    async post(req, res, next) {
+    async post(req, res) {
         try {
             const { body } = req
             if (!body.name || !body.email) {
@@ -15,14 +15,14 @@ class CustomerConstroller {
         }
     }
 
-    async get(req, res, next) {
+    async get(req, res) {
         try {
             const { skip, limit } = req.query
             if (!skip || !limit) {
-                throw new Error('Params skip and limit must be send!. Default: skip = 0, limit = 100')
+                throw new Error(`Params skip and limit must be send!`)
             }
-
-            res.send(await service.get(skip, limit))
+            
+            res.send(await service.get(Number(skip), Number(limit)))
         } catch (e) {
             res.status(400).send(e)
         }
