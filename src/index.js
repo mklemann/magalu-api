@@ -6,6 +6,7 @@ const morgan = require('morgan')
 
 const loginRoute = require('./_shared/login/login.route')
 const custumerRoutes = require('./customers/customers.routes')
+const userRoutes = require('./users/user.routes')
 
 require('dotenv').config()
 const app = express()
@@ -17,6 +18,7 @@ app.use(cors())
 app.use(morgan('combined'))
 
 app.use(custumerRoutes)
+app.use(userRoutes)
 app.use(loginRoute)
 
 app.listen(process.env.PORT, () => {
