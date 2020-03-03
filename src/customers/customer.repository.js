@@ -118,30 +118,12 @@ class ReposityCustomers {
                 collection.findOne({ _id: ObjectId(customerId) }, (err, res) => {
                     if (err) return reject(err)
 
-                    let { favorites = [] } = res
-                    let allFavorites = []
-
-                    // products - novos
-                    // existentes
-
-
-                    if (favorites.length === 0) {
-                        allFavorites = products
-                    } else {
-                        for (const product of products) {
-                            const favoritesString = JSON.stringify(favorites)
-                            if(!favoritesString.includes(product.id)) allFavorites.push(product)
-                        }
-                    }
-
-                    collection.updateOne({ _id: ObjectId(customerId) }, { $push: { favorites: { $each: allFavorites } } }, (err, result) => {
+                    collection.updateOne({ _id: ObjectId(customerId) }, { $addToSet: { favorites: { $each: products } } }, (err, result) => {
                         if (err) return reject(err)
                         return resolve(result)
                     })
-
                     client.close()
                 })
-
             })
         })
     }
