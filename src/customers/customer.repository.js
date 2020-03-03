@@ -14,7 +14,6 @@ class ReposityCustomers {
 
                 const collection = db.collection('customers-test')
                 collection.createIndex({ email: 1 }, { unique: true })
-                // collection.createIndex({ "favorites.id": 1 }, { unique: true })
 
                 collection.insertOne(body, {
                     wtimeout: 10000,
@@ -119,6 +118,29 @@ class ReposityCustomers {
                     if (err) return reject(err)
 
                     collection.updateOne({ _id: ObjectId(customerId) }, { $addToSet: { favorites: { $each: products } } }, (err, result) => {
+                        if (err) return reject(err)
+                        return resolve(result)
+                    })
+                    client.close()
+                })
+            })
+        })
+    }
+
+    async removeFavoriteProduct(customerId, id) {
+        return new Promise((resolve, reject) => {
+            MongoClient.connect(env.uri, (err, client) => {
+                if (err) return reject(err)
+                assert.equal(null, err)
+                console.log('Connected to insert document on mongodb')
+
+                const db = client.db(env.databaseName)
+                const collection = db.collection('customers-test')
+
+                collection.findOne({ _id: ObjectId(customerId) }, (err, res) => {
+                    if (err) return reject(err)
+
+                    collection.updateOne({ _id: ObjectId(customerId) }, { $pull: { favorites: { id: id } } }, (err, result) => {
                         if (err) return reject(err)
                         return resolve(result)
                     })

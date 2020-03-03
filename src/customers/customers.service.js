@@ -38,8 +38,13 @@ class CustomerService {
             }
         }
 
-        return await repository.favoriteProduct(customerId, favoriteProducts)
+        const favoriteProduct = await repository.favoriteProduct(customerId, favoriteProducts)
         return favoriteProducts
+    }
+
+    async removeFavoriteProduct(customerId, productId) {
+        const removeProduct = await repository.removeFavoriteProduct(customerId, productId)
+        return removeProduct
     }
 }
 

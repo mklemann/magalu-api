@@ -11,6 +11,7 @@ router.put('/customer/:id', verifyJwt, controller.update)
 router.delete('/customer/:id', verifyJwt, controller.delete)
 
 router.post('/customer/:customerId/favorite', verifyJwt, controller.favoriteProduct)
+router.delete('/customer/:customerId/product/:productId/favorite', verifyJwt, controller.removeFavoriteProduct)
 // router.get('/customer/:idCustomer/favorite'
 
 module.exports = router

@@ -102,6 +102,19 @@ class CustomerConstroller {
             res.status(400).json({ succes: false, message: e.message || e })
         }
     }
+
+    async removeFavoriteProduct(req, res) {
+        try {
+            const { customerId, productId } = req.params
+            if (!productId || !customerId) {
+                throw new Error(`productId and customerId must be send!`)
+            }
+
+            res.json(await service.removeFavoriteProduct(customerId, productId))
+        } catch (e) {
+            res.status(400).json({ succes: false, message: e.message || e })
+        }
+    }
 }
 
 module.exports = new CustomerConstroller()
