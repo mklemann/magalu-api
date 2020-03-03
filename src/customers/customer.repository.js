@@ -1,18 +1,19 @@
 const { MongoClient, ObjectId } = require('mongodb')
 const assert = require('assert')
 const _ = require('lodash')
-const env = require('../environment')
+// const env = require('../environment')
+require('dotenv').config()
 
 class ReposityCustomers {
     async insert(body) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(env.uri, (err, client) => {
+            MongoClient.connect(process.process.env.URI, (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
 
-                const db = client.db(env.databaseName)
+                const db = client.db(process.env.DB_NAME)
 
-                const collection = db.collection('customers-test')
+                const collection = db.collection(process.env.COLLECTION_COSTUMER)
                 collection.createIndex({ email: 1 }, { unique: true })
 
                 collection.insertOne(body, {
@@ -30,12 +31,12 @@ class ReposityCustomers {
 
     async get(skip, limit) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(env.uri, { useUnifiedTopology: true }, async (err, client) => {
+            MongoClient.connect(process.env.URI, { useUnifiedTopology: true }, async (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
 
-                const db = client.db(env.databaseName)
-                const collection = db.collection('customers-test')
+                const db = client.db(process.env.DB_NAME)
+                const collection = db.collection(process.env.COLLECTION_COSTUMER)
 
                 await collection.find({}).skip(skip).limit(limit).toArray((err, result) => {
                     if (err) return reject(err)
@@ -48,13 +49,13 @@ class ReposityCustomers {
 
     async getById(id) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(env.uri, (err, client) => {
+            MongoClient.connect(process.env.URI, (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
                 console.log('Connected to insert document on mongodb')
 
-                const db = client.db(env.databaseName)
-                const collection = db.collection('customers-test')
+                const db = client.db(process.env.DB_NAME)
+                const collection = db.collection(process.env.COLLECTION_COSTUMER)
 
                 collection.findOne({ _id: ObjectId(id) }, (err, result) => {
                     if (err) return reject(err)
@@ -67,13 +68,13 @@ class ReposityCustomers {
 
     async update(id, body) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(env.uri, (err, client) => {
+            MongoClient.connect(process.env.URI, (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
                 console.log('Connected to insert document on mongodb')
 
-                const db = client.db(env.databaseName)
-                const collection = db.collection('customers-test')
+                const db = client.db(process.env.DB_NAME)
+                const collection = db.collection(process.env.COLLECTION_COSTUMER)
 
                 collection.updateOne({ _id: ObjectId(id) },
                     { $set: { name: body.name, email: body.email } }, (err, result) => {
@@ -87,13 +88,13 @@ class ReposityCustomers {
 
     async delete(id) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(env.uri, (err, client) => {
+            MongoClient.connect(process.env.URI, (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
                 console.log('Connected to insert document on mongodb')
 
-                const db = client.db(env.databaseName)
-                const collection = db.collection('customers-test')
+                const db = client.db(process.env.DB_NAME)
+                const collection = db.collection(process.env.COLLECTION_COSTUMER)
 
                 collection.deleteOne({ _id: ObjectId(id) }, (err, result) => {
                     if (err) return reject(err)
@@ -106,13 +107,13 @@ class ReposityCustomers {
 
     async favoriteProduct(customerId, products) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(env.uri, (err, client) => {
+            MongoClient.connect(process.env.URI, (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
                 console.log('Connected to insert document on mongodb')
 
-                const db = client.db(env.databaseName)
-                const collection = db.collection('customers-test')
+                const db = client.db(process.env.DB_NAME)
+                const collection = db.collection(process.env.COLLECTION_COSTUMER)
 
                 collection.findOne({ _id: ObjectId(customerId) }, (err, res) => {
                     if (err) return reject(err)
@@ -129,13 +130,13 @@ class ReposityCustomers {
 
     async removeFavoriteProduct(customerId, id) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(env.uri, (err, client) => {
+            MongoClient.connect(process.env.URI, (err, client) => {
                 if (err) return reject(err)
                 assert.equal(null, err)
                 console.log('Connected to insert document on mongodb')
 
-                const db = client.db(env.databaseName)
-                const collection = db.collection('customers-test')
+                const db = client.db(process.env.DB_NAME)
+                const collection = db.collection(process.env.COLLECTION_COSTUMER)
 
                 collection.findOne({ _id: ObjectId(customerId) }, (err, res) => {
                     if (err) return reject(err)

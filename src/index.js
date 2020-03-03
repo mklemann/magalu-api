@@ -4,11 +4,12 @@ const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
 
-const app = express()
-
 const loginRoute = require('./_shared/login/login.route')
 const custumerRoutes = require('./customers/customers.routes')
-const env = require('./environment')
+
+require('dotenv').config()
+const app = express()
+
 
 app.use(helmet())
 app.use(bodyParser.json())
@@ -18,6 +19,6 @@ app.use(morgan('combined'))
 app.use(custumerRoutes)
 app.use(loginRoute)
 
-app.listen(env.port, () => {
+app.listen(process.env.PORT, () => {
     console.log('listening on port 3000')
 })
