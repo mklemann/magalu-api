@@ -1,7 +1,6 @@
 const { MongoClient, ObjectId } = require('mongodb')
 const assert = require('assert')
-const _ = require('lodash')
-// const env = require('../environment')
+
 require('dotenv').config()
 
 class ReposityCustomers {

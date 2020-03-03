@@ -6,7 +6,11 @@ require('dotenv').config()
 
 class LoginController {
     async login(req, res) {
-        const { email } = req.body
+        const { username, password } = req.body
+
+        if (!username || !password) {
+            throw res.status(500).json('username and password must be informed!')
+        }
 
         MongoClient.connect(process.env.URI, (err, client) => {
             if (err) return reject(err)
@@ -15,7 +19,7 @@ class LoginController {
             const db = client.db(process.env.DB_NAME)
             const collection = db.collection('users')
 
-            collection.findOne({ email: email }, (err, doc) => {
+            collection.findOne({ username, password }, (err, doc) => {
                 if (err) return res.send(err)
 
                 if (doc) {
@@ -40,7 +44,7 @@ class LoginController {
         const token = authorization.split(' ')[1]
 
         jwt.verify(token, process.env.SECRET, (err, decoded) => {
-            if (err) res.status(500).send({ auth: false, message: 'Failed to authenticate token.' })
+            if (err) res.status(500).json({ auth: false, message: 'Failed to authenticate token.' })
             next()
         })
     }
