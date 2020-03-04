@@ -1,26 +1,26 @@
-const { MongoClient, ObjectId } = require('mongodb')
-const assert = require('assert')
+const { MongoClient, ObjectId } = require('mongodb');
+const assert = require('assert');
 
-require('dotenv').config()
+require('dotenv').config();
 
 class ReposityCustomers {
     async insert(body) {
         return new Promise((resolve, reject) => {
             MongoClient.connect(process.process.env.URI, (err, client) => {
-                if (err) return reject(err)
-                assert.equal(null, err)
+                if (err) return reject(err);
+                assert.equal(null, err);
 
-                const db = client.db(process.env.DB_NAME)
+                const db = client.db(process.env.DB_NAME);
 
-                const collection = db.collection(process.env.COLLECTION_COSTUMER)
-                collection.createIndex({ email: 1 }, { unique: true })
+                const collection = db.collection(process.env.COLLECTION_COSTUMER);
+                collection.createIndex({ email: 1 }, { unique: true });
 
                 collection.insertOne(body, {
                     wtimeout: 10000,
                     j: true
                 }, (err, result) => {
-                    if (err) return reject(err)
-                    return resolve(result.ops[0] || result)
+                    if (err) return reject(err);
+                    return resolve(result.ops[0] || result);
                 })
                 client.close()
 

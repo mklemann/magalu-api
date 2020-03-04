@@ -1,4 +1,4 @@
-const request = require('./request')
+const request = require('./request');
 
 module.exports = async (productId) => {
     const options = {
@@ -6,8 +6,8 @@ module.exports = async (productId) => {
         url: `http://challenge-api.luizalabs.com/api/product/${productId}`,
         headers: {},
         body: {}
-    }
+    };
 
-    const result = await request(options)
-    return result
+    const result = await request(options);
+    return result;
 }
