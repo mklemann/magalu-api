@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { MongoClient } = require('mongodb')
 const assert = require('assert')
+const crypto = require('../utils/crypto')
 
 require('dotenv').config()
 
@@ -19,7 +20,7 @@ class LoginController {
             const db = client.db(process.env.DB_NAME)
             const collection = db.collection('users')
 
-            collection.findOne({ username, password }, (err, doc) => {
+            collection.findOne({ username, password: crypto.encrypt(password) }, (err, doc) => {
                 if (err) return res.send(err)
 
                 if (doc) {
@@ -31,7 +32,7 @@ class LoginController {
 
                     res.json({ auth: true, token, expiresIn: 3600 })
                 } else {
-                    res.json({ message: "Usuáro não encontrado, certifique-se do email!" })
+                    res.json({ message: "Usuáro ou Senha inválido!" })
                 }
             })
             client.close()

@@ -1,8 +1,11 @@
 const repository = require('./user.repository')
+const crypto = require('../_shared/utils/crypto')
+
+require('dotenv').config()
 
 class ServiceUsers {
     async post(body) {
-        const createUser = await repository.insert({ username: body.username, password: body.password })
+        const createUser = await repository.insert({ username: body.username, password: crypto.encrypt(body.password) })
         return createUser
     }
 
