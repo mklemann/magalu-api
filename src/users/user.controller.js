@@ -11,7 +11,7 @@ class CustomerUsers {
 
             res.status(201).json(await service.post(body));
         } catch (err) {
-            if (err.code === 11000) res.status(500).json({ success: false, message: 'Registro duplicado! Entre com outro username!' });
+            if (err.code === 11000) res.status(500).json({ success: false, message: 'Register with another username, please!' });
             return res.status(500).send(err.message || err);
         }
 

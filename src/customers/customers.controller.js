@@ -7,7 +7,7 @@ class CustomerConstroller {
             const { body } = req;
 
             if (!body.name || !body.email) {
-                throw new Error('Fields name and email must be send!');
+                throw new Error('Fields name and email must be sent!');
             };
 
             res.status(201).json(await service.post(body));
@@ -50,7 +50,7 @@ class CustomerConstroller {
             const { id } = req.params;
 
             if (!id) {
-                throw new Error(`Param id must be send!`);
+                throw new Error(`Param id must be sent!`);
             };
 
             const customers = await service.getById(id);
@@ -71,7 +71,7 @@ class CustomerConstroller {
             const { body } = req;
 
             if (!id) {
-                throw new Error(`Param id must be send!`);
+                throw new Error(`Param id must be sent!`);
             };
 
             if (!body) {
@@ -95,7 +95,7 @@ class CustomerConstroller {
             const { id } = req.params;
 
             if (!id) {
-                throw new Error(`Param id must be send!`);
+                throw new Error(`Param id must be sent!`);
             };
 
             await service.delete(id);
@@ -136,7 +136,7 @@ class CustomerConstroller {
                 throw new Error(`productId and customerId must be send!`);
             };
 
-            const resultRemoveProduct = await service.removeFavoriteProduct(customerId, productId)
+            const resultRemoveProduct = await service.removeFavoriteProduct(customerId, productId);
 
             res.json(resultRemoveProduct.result.nModgified != 0 ? 'product removed' : 'not removed');
         } catch (err) {
@@ -147,4 +147,4 @@ class CustomerConstroller {
     };
 };
 
-module.exports = new CustomerConstroller()
+module.exports = new CustomerConstroller();
