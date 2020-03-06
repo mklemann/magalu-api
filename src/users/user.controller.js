@@ -9,7 +9,9 @@ class CustomerUsers {
                 throw new Error('Fields username and password must be send!');
             }
 
-            res.status(201).json(await service.post(body));
+            const { _id: id, username } = await service.post(body)
+
+            res.status(201).json({ id, username });
         } catch (err) {
             if (err.code === 11000) res.status(500).json({ success: false, message: 'Register with another username, please!' });
             return res.status(500).send(err.message || err);

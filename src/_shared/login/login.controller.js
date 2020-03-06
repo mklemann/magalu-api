@@ -30,7 +30,7 @@ class LoginController {
 
                     res.json({ auth: true, token, expiresIn: 3600 });
                 } else {
-                    res.json({ message: "username or password is invalid!" });
+                    res.status(500).json({ message: "username or password is invalid!" });
                 };
             });
             client.close();
@@ -39,7 +39,7 @@ class LoginController {
 
     async verifyJwt({ headers } = req, res, next) {
         const { authorization } = headers;
-        if (!authorization) throw res.status(500).json({ auth: false, message: 'Token not found.' });
+        if (!authorization) throw res.status(401).json({ auth: false, message: 'Token not found.' });
 
         const token = authorization.split(' ')[1];
 

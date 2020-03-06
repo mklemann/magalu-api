@@ -14,7 +14,7 @@ class CustomerConstroller {
 
         } catch (err) {
 
-            if (err.code === 11000) res.status(500).json({ success: false, message: 'Register with another email, please!' });
+            if (err.code === 11000) res.status(400).json({ success: false, message: 'Email already registered!' });
             return res.status(500).send(err.message || err);
 
         };
@@ -83,7 +83,7 @@ class CustomerConstroller {
 
         } catch (err) {
 
-            if (e.code === 11000) res.status(500).json({ success: false, message: 'Register with another email, please!' });
+            if (e.code === 11000) res.status(400).json({ success: false, message: 'Email already registered!' });
             res.status(400).json({ succes: false, message: err.message || err });
 
         };
