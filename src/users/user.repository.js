@@ -36,7 +36,7 @@ class RepositoryUsers {
     async get(skip, limit) {
         return new Promise((resolve, reject) => {
 
-            MongoClient.connect(process.env.URI, { useUnifiedTopology: true }, async (err, client) => {
+            MongoClient.connect(process.env.URI, async (err, client) => {
                 if (err) return reject(err);
                 assert.equal(null, err);
 
@@ -55,6 +55,9 @@ class RepositoryUsers {
     };
 
     async update(id, body) {
+
+        if(!ObjectId.isValid(id)) throw new Error('id is invalid')
+
         return new Promise((resolve, reject) => {
 
             MongoClient.connect(process.env.URI, (err, client) => {
@@ -78,6 +81,9 @@ class RepositoryUsers {
     };
 
     async delete(id) {
+
+        if(!ObjectId.isValid(id)) throw new Error('id is invalid')
+
         return new Promise((resolve, reject) => {
 
             MongoClient.connect(process.env.URI, (err, client) => {

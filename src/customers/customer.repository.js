@@ -33,7 +33,7 @@ class ReposityCustomers {
     async get(skip, limit) {
         return new Promise((resolve, reject) => {
 
-            MongoClient.connect(process.env.URI, { useUnifiedTopology: true }, async (err, client) => {
+            MongoClient.connect(process.env.URI, async (err, client) => {
                 if (err) return reject(err);
                 assert.equal(null, err);
 
@@ -43,8 +43,9 @@ class ReposityCustomers {
                 await collection.find({}).skip(skip).limit(limit).toArray((err, result) => {
                     if (err) return reject(err);
                     return resolve(result);
-                    client.close();
                 });
+
+                client.close();
 
             });
 
@@ -52,6 +53,9 @@ class ReposityCustomers {
     };
 
     async getById(id) {
+
+        if (!ObjectId.isValid(id)) throw new Error('id is invalid')
+
         return new Promise((resolve, reject) => {
 
             MongoClient.connect(process.env.URI, (err, client) => {
@@ -72,6 +76,7 @@ class ReposityCustomers {
     };
 
     async update(id, body) {
+
         return new Promise((resolve, reject) => {
 
             MongoClient.connect(process.env.URI, (err, client) => {
@@ -95,6 +100,9 @@ class ReposityCustomers {
     };
 
     async delete(id) {
+
+        if (!ObjectId.isValid(id)) throw new Error('id is invalid')
+
         return new Promise((resolve, reject) => {
 
             MongoClient.connect(process.env.URI, (err, client) => {
@@ -117,6 +125,9 @@ class ReposityCustomers {
     };
 
     async favoriteProduct(customerId, products) {
+
+        if (!ObjectId.isValid(customerId)) throw new Error('customerId is invalid')
+
         return new Promise((resolve, reject) => {
 
             MongoClient.connect(process.env.URI, (err, client) => {
@@ -138,6 +149,10 @@ class ReposityCustomers {
     }
 
     async removeFavoriteProduct(customerId, id) {
+
+        if (!ObjectId.isValid(customerId)) throw new Error('customerId is invalid')
+        if (!ObjectId.isValid(id)) throw new Error('id is invalid')
+
         return new Promise((resolve, reject) => {
 
             MongoClient.connect(process.env.URI, (err, client) => {
