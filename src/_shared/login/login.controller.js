@@ -39,6 +39,8 @@ class LoginController {
 
     async verifyJwt({ headers } = req, res, next) {
         const { authorization } = headers;
+        if (!authorization) throw res.status(500).json({ auth: false, message: 'Token not found.' });
+
         const token = authorization.split(' ')[1];
 
         jwt.verify(token, process.env.SECRET, (err, decoded) => {
