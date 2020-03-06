@@ -8,4 +8,4 @@ Para utilização da APi:
   1 - Deve ser criado um usuário (Create User) para que consiga autenticar na API;
   2 - Gerar um token passando usuário e senha do User criado no primeiro step;
     2.1 - O token gerado deve ser passado nos headers das chamadas dos métodos de "Customers".
-  3 - Realizar as operações de clientes e manipulação(criação e removação) de produtos da lista de Produtos Favoritos.
+  3 - Realizar as operações de clientes e manipulação(criação e remoção) de produtos da lista de Produtos Favoritos.
