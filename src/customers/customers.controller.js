@@ -79,7 +79,7 @@ class CustomerConstroller {
             };
 
             const resultUpdate = await service.update(id, body)
-            res.json(resultUpdate.result.nModified != 0 ? 'customer updated' : 'not updated');
+            res.json(resultUpdate.value);
 
         } catch (err) {
 

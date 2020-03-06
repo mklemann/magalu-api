@@ -81,8 +81,8 @@ class ReposityCustomers {
                 const db = client.db(process.env.DB_NAME);
                 const collection = db.collection(process.env.COLLECTION_COSTUMER);
 
-                collection.updateOne({ _id: ObjectId(id) },
-                    { $set: { name: body.name, email: body.email } }, (err, result) => {
+                collection.findOneAndUpdate({ _id: ObjectId(id) },
+                    { $set: { name: body.name, email: body.email } }, { returnOriginal: false }, (err, result) => {
                         if (err) return reject(err)
                         return resolve(result)
                     });
@@ -126,7 +126,7 @@ class ReposityCustomers {
                 const db = client.db(process.env.DB_NAME);
                 const collection = db.collection(process.env.COLLECTION_COSTUMER);
 
-                collection.updateOne({ _id: ObjectId(customerId) }, { $addToSet: { favorites: { $each: products } } }, (err, result) => {
+                collection.findOneAndUpdate({ _id: ObjectId(customerId) }, { $addToSet: { favorites: { $each: products } } }, (err, result) => {
                     if (err) return reject(err);
                     return resolve(result);
                 });

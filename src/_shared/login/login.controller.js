@@ -44,7 +44,7 @@ class LoginController {
         const token = authorization.split(' ')[1];
 
         jwt.verify(token, process.env.SECRET, (err, decoded) => {
-            if (err) res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
+            if (err) res.status(401).json({ auth: false, message: 'Failed to authenticate token.' });
             next();
         });
     };
